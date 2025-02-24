@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 # */AIPND-revision/intropyproject-classify-pet-images/print_results.py
 #                                                                             
-# PROGRAMMER: 
-# DATE CREATED:
+# PROGRAMMER: Wille, Krisztina Martina
+# DATE CREATED: 2025.02.23                                 
 # REVISED DATE: 
 # PURPOSE: Create a function print_results that prints the results statistics
 #          from the results statistics dictionary (results_stats_dic). It 
@@ -26,13 +26,12 @@
 #         This function does not output anything other than printing a summary
 #         of the final results.
 ##
-# TODO 6: Define print_results function below, specifically replace the None
+# (y) TODO 6: Define print_results function below, specifically replace the None
 #       below by the function definition of the print_results function. 
 #       Notice that this function doesn't to return anything because it  
 #       prints a summary of the results using results_dic and results_stats_dic
 # 
-def print_results(results_dic, results_stats_dic, model, 
-                  print_incorrect_dogs = False, print_incorrect_breed = False):
+def print_results(results_dic, results_stats_dic, model, print_incorrect_dogs = False, print_incorrect_breed = False):
     """
     Prints summary results on the classification and then prints incorrectly 
     classified dogs and incorrectly classified dog breeds if user indicates 
@@ -62,5 +61,30 @@ def print_results(results_dic, results_stats_dic, model,
     Returns:
            None - simply printing results.
     """    
-    None
-                
+
+    print('='*160)
+    print(f"Results Summary for CNN Model Architecture: {model}")  
+    print('-'*160)
+    print(f"Number of Images: {results_stats_dic['n_images']:2d}")
+    print(f"Number of Dog Images: {results_stats_dic['n_dogs_img']:2d}")
+    print(f"Number of Not-a Dog Images: {results_stats_dic['n_notdogs_img']:2d}")
+    print('-'*160)
+    print(f"Percentage of Correctly Classified Dog Images: {results_stats_dic['pct_correct_dogs']:5.1f}")
+    print(f"Percentage of Correctly Classified Not-a Dog Images: {results_stats_dic['pct_correct_notdogs']:5.1f}")
+    print(f"Percentage of Correctly Classified Dog Breeds: {results_stats_dic['pct_correct_breed']:5.1f}")
+    print(f"Percentage of Match: {results_stats_dic['pct_match']:5.1f}")
+    print(f"Percentage of Correctly Labeled Images: {results_stats_dic['pct_correct_label']:5.1f}")
+    print('-'*160)
+    if (print_incorrect_dogs and ((results_stats_dic['n_correct_dogs'] + results_stats_dic['n_correct_notdogs']) != results_stats_dic['n_images'])):
+        print(f"Incorrectly Classified Dogs:")
+        for pet in results_dic:
+            if sum(results_dic[pet][3:]) == 1:
+                print(f"Real: {results_dic[pet][0]:>26}   Classifier: {results_dic[pet][1]:>30}")    
+    if (print_incorrect_breed and (results_stats_dic['n_correct_dogs'] != results_stats_dic['n_correct_breed'])):
+        print(f"Incorrectly Classified Dog Breeds:")
+        for pet in results_dic:
+            if sum(results_dic[pet][3:]) == 2 and results_dic[pet][2] == 0:
+                print(f"Real: {results_dic[pet][0]:>26}   Classifier: {results_dic[pet][1]:>30}")
+    print('='*160)
+    return
+        
